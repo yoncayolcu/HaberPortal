@@ -1,0 +1,67 @@
+﻿<!-- Index.cshtml -->
+@model IEnumerable<Haber>
+
+@{
+    ViewData["Title"] = "Haberler";
+}
+@if (User.IsInRole("Admin"))
+{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2 class="text-center mb-4 fw-bold text-primary">Haberler</h2>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var haber in Model)
+    {
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                @if (!string.IsNullOrEmpty(haber.ResimUrl))
+                {
+                    <img src="@haber.ResimUrl" class="card-img-top rounded-top" alt="@haber.Baslik" style="max-height: 200px; object-fit: cover;" />
+                }
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold text-truncate">@haber.Baslik</h5>
+                    <p class="card-text text-muted text-truncate">
+                        @if (haber.Icerik.Length > 100)
+                        {
+                            @haber.Icerik.Substring(0, 100)
+                            
+                            }
+                        else
+                        {
+                            @haber.Icerik
+                        }
+                    </p>
+                    <p class="text-muted small mb-1">
+                        <i class="bi bi-person-fill"></i> Yazar: @haber.Yazar?.FullName
+                    </p>
+                    <p class="text-muted small">
+                        <i class="bi bi-calendar-event"></i> Yayın Tarihi: @haber.YayinTarihi.ToString("dd.MM.yyyy HH:mm")
+                    </p>
+                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                        <a asp-action="Details" asp-route-id="@haber.Id" class="btn btn-outline-primary btn-sm">Detay</a>
+                        @if (User.IsInRole("Yazar") || User.IsInRole("Admin"))
+                        {
+                            <div class="d-flex gap-1">
+                                <a asp-action="Edit" asp-route-id="@haber.Id" class="btn btn-outline-warning btn-sm">Düzenle</a>
+                                <form asp-action="Delete" asp-route-id="@haber.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">Sil</button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (User.IsInRole("Yazar"))
+{
+    <div class="d-flex justify-content-center">
+        <a asp-action="Create" class="btn btn-success mt-4 px-4">
+            <i class="bi bi-plus-lg"></i> Yeni Haber Oluştur
+        </a>
+    </div>
+}

@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid">
+    <!-- Sayfa Başlığı -->
+    <h1 class="h3 mb-4 text-gray-800">Admin Paneli</h1>
+
+    
+
+    <!-- Bildirimler -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Bildirimler</h6>
+        </div>
+        <div class="card-body">
+            <ul class="list-group" id="notificationsList">
+                <!-- Bildirimler buraya eklenecek -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/notificationHub")
+        .build();
+
+    connection.on("ReceiveNotification", (user, message) => {
+        const notificationsList = document.getElementById("notificationsList");
+        const notificationItem = document.createElement("li");
+        notificationItem.className = "list-group-item list-group-item-info mb-2";
+        notificationItem.innerText = `${user}: ${message}`;
+        notificationsList.prepend(notificationItem); // Yeni bildirimleri en üste ekler
+    });
+
+    connection.start()
+        .then(() => console.log("SignalR bağlantısı başarılı."))
+        .catch(err => console.error("SignalR bağlantı hatası:", err));
+</script>

@@ -1,0 +1,32 @@
+﻿
+
+<!-- Register.cshtml -->
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<h2>Kayıt Ol</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Register" method="post">
+            <div class="form-group">
+                <label for="fullName">Ad Soyad</label>
+                <input type="text" name="fullName" id="fullName" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="email">E-posta</label>
+                <input type="email" name="email" id="email" class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                <input type="password" name="password" id="password" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+        </form>
+    </div>
+</div>
+
+<hr />
+<p>
+    Zaten bir hesabınız var mı? <a asp-action="Login">Giriş Yapın</a>
+</p>

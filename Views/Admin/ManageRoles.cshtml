@@ -1,0 +1,22 @@
+﻿@using HaberPortal.ViewModels
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@model ManageRolesViewModel
+
+<h2>@Model.UserName Kullanıcısının Rolleri</h2>
+<form asp-action="ManageRoles" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <div>
+        @for (int i = 0; i < Model.Roles.Count; i++)
+        {
+            <div class="form-check">
+                <input type="hidden" asp-for="Roles[@i].RoleName" /> <!-- RoleName gönderiliyor -->
+                <input class="form-check-input" asp-for="Roles[@i].IsSelected" />
+                <label class="form-check-label">@Model.Roles[i].RoleName</label>
+            </div>
+        }
+    </div>
+    <button type="submit" class="btn btn-success mt-3">Kaydet</button>
+    <a asp-action="Users" class="btn btn-secondary mt-3">Geri</a>
+</form>

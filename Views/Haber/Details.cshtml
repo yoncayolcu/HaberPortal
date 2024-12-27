@@ -1,0 +1,20 @@
+﻿
+@model Haber
+
+@{
+    ViewData["Title"] = "Haber Detayları";
+}
+
+<div class="card">
+    @if (!string.IsNullOrEmpty(Model.ResimUrl))
+    {
+        <img src="@Model.ResimUrl" class="card-img-top" alt="@Model.Baslik" />
+    }
+    <div class="card-body">
+        <h2 class="card-title">@Model.Baslik</h2>
+        <p class="card-text">@Model.Icerik</p>
+        <p class="text-muted">Yazar: @Model.Yazar?.FullName</p>
+        <p class="text-muted">Yayın Tarihi: @Model.YayinTarihi.ToString("dd.MM.yyyy HH:mm")</p>
+        <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+    </div>
+</div>
